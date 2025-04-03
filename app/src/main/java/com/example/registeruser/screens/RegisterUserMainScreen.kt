@@ -22,11 +22,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.registeruser.components.ErrorDialog
 import com.example.registeruser.components.MyPasswordField
 import com.example.registeruser.components.MyTextField
+import com.example.registeruser.database.AppDatabase
 import com.example.registeruser.ui.theme.RegisterUserTheme
 
 @Composable
 fun RegisterUserMainScreen() {
-    val registerUserViewModel : RegisterUserViewModel = viewModel()
+    val ctx = LocalContext.current
+    val userDao = AppDatabase.getDatabase(ctx).userDao()
+    val registerUserViewModel : RegisterUserViewModel =
+        viewModel(
+            factory = RegisterUserViewModelFactory(userDao)
+        )
 
     Scaffold {
         Column(
